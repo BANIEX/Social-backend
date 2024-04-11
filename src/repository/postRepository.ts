@@ -23,7 +23,7 @@ class PostRepository {
   }
 
   async FindUsersNoOfPost(followedUserIds: any) {
-       const query = { user: { $in: followedUserIds } };
+       const query = { userId: { $in: followedUserIds } };
 
     try{
       return await Post.countDocuments(query)
@@ -34,6 +34,27 @@ class PostRepository {
       console.log(error)
 
     }
+  }
+
+
+  async FindUsersPosts(userFeedObjectMod: any) {
+       const query = { userId: { $in: userFeedObjectMod.followedUserIds } };
+
+       try{
+         let feed = await Post.find(query)
+           .sort({ createdAt: -1 }) 
+           .skip((userFeedObjectMod.page - 1) * userFeedObjectMod.limit) 
+           .limit(userFeedObjectMod.limit) 
+           .populate("userId", '-password -posts -createdAt -updatedAt -__v'); 
+
+         return feed;
+       }catch(error){
+        console.log(error)
+       }
+
+
+
+
   }
 
   

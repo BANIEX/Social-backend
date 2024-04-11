@@ -11,17 +11,51 @@ class UserController {
   userFeed = async (request: Request | any, response: Response) => {
     const userId = request.user._id;
     const page = parseInt(request.query.page) || 1;
-    const limit = 10
+    const limit = 1
 
-    console.log(page, userId)
+    console.log("here")
 
     const userFeedObject = {userId, page, limit}
+    try{
+      let userFeed = await this.userService.fetchUserFeed(userFeedObject);
 
-    await this.userService.fetchUserFeed(userFeedObject);
+      if(userFeed === "following no users"){
+       return  response.status(200).json({
+          error: false,
+          message: "No feed available, users is following no one",
+        });
 
-    
+      }
 
-    return response.send("follow endpint active");
+      if (userFeed === "no posts available for now") {
+        return response.status(200).json({
+          error: false,
+          message: "No feed available",
+        });
+      }
+
+
+      if(userFeed){
+
+
+         return response.status(200).json({
+           error: false,
+           message: "User feed fetched successfully",
+           data: userFeed,
+         });
+      
+      }
+
+     
+      
+
+
+
+    }catch(error){
+      return response.sendStatus(500)
+
+    }
+
   }
 
 

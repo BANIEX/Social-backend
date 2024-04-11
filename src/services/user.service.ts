@@ -46,6 +46,8 @@ class UserService {
       followerId : userFeedObject.userId
     }
 
+    
+
     try {
 
       const usersFollowing = await this.followRepository.FindFollowing(findFollowingObject);
@@ -55,10 +57,34 @@ class UserService {
       }
 
 
-       const followedUserIds = usersFollowing.map((object) => object.followeeId);
+      const followedUserIds = usersFollowing.map((object) => object.followeeId);
 
 
-        const noOfPosts = await this.postRepository.FindUsersNoOfPost(followedUserIds)
+      const noOfPosts = await this.postRepository.FindUsersNoOfPost(followedUserIds)
+      console.log(noOfPosts);
+
+      if(noOfPosts === 0){
+        return "no posts available for now"
+      }
+
+      const userFeedObjectMod = {...userFeedObject, noOfPosts, followedUserIds}
+      console.log(userFeedObjectMod);
+
+      let feed = await this.postRepository.FindUsersPosts(userFeedObjectMod);
+
+      return {
+        feed,
+        noOfPosts,
+        noOfPages: Math.ceil(noOfPosts || 0 / userFeedObject.limit),
+        currentPage: userFeedObject.page
+      };
+
+      console.log(feed, "feed")
+
+
+      
+
+
 
 
 
