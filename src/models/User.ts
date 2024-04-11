@@ -8,7 +8,9 @@ export interface UserDoc extends Document {
   userName: string,
   email: string,
   password: string,
-  posts: string[]
+  posts: string[],
+  followingCount: number,
+  followerCount: number
 
 
 }
@@ -23,8 +25,8 @@ const userSchema = new Schema({
   email: {type: String},
   password: {type: String},
   posts: {type: [String]},
-
-  
+  followingCount: {type: Number},
+  followerCount: {type: Number}  
 },{timestamps: true})
 
 

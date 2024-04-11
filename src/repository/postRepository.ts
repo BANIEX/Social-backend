@@ -21,6 +21,22 @@ class PostRepository {
       console.log(error);
     }
   }
+
+  async FindUsersNoOfPost(followedUserIds: any) {
+       const query = { user: { $in: followedUserIds } };
+
+    try{
+      return await Post.countDocuments(query)
+
+    } catch(error){
+
+
+      console.log(error)
+
+    }
+  }
+
+  
 }
 
 export default PostRepository;

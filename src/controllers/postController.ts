@@ -23,12 +23,14 @@ class PostController {
 
 
     const newPost = await this.postService.createNewPost(postObj);
+    if(newPost){
+      return response.status(200).json({
+        error: false,
+        message: "Successfuly created a new post"
+      })
+    }
 
-
-
-
-    response.send("create post")
-    console.log(postObj)
+    return response.send("Error creating new post")
 
   }
 

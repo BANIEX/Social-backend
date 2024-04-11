@@ -24,6 +24,24 @@ import User from "../models/User";
     }
   }
 
+  async IncreaseFollowAndFollowingCount(followObject: any){
+    console.log(followObject.followeeId, "Right here")
+    try{
+      const followeeUpdate = await User.findOneAndUpdate({_id: followObject.followeeId}, {$inc: {followerCount: 1}});
+      const followerUpdate = await User.findOneAndUpdate(
+        { _id: followObject.followerId },
+        { $inc: { followingCount: 1 } }
+      );
+
+      // console.log(followeeUpdate)
+      // console.log(followerUpdate);
+
+
+    }catch(error){
+
+    }
+  }
+
 }
 
 

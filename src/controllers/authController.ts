@@ -54,6 +54,9 @@ class AuthController {
       email: request.body.email,
       userName: request.body.userName,
       password: await bcrypt.hash(request.body.password, this.salt),
+      followerCount: 0,
+      followingCount: 0,
+      posts: []
     };  
 
 
